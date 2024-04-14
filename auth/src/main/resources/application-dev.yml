@@ -1,0 +1,30 @@
+server:
+  port: 1001
+spring:
+  dynamic-datasource:
+    data-source-list:
+      - name: andi
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/andi?useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8
+        username: root
+        password: 123456
+        connection-test-query: SELECT 1
+      - name: dawn
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/dawn?useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8
+        username: root
+        password: 123456
+        connection-test-query: SELECT 1
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      connect-timeout: 10000
+      timeout: 10000
+      password: 123456
+      database: 0
+      lock-retry-count: 3
+      lock-time: 60000
+  security:
+    user:
+      password: 123456

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!--
+context的子元素必须按照以下给出的个数、顺序配置。
+property (0..N)
+plugin (0..N)
+commentGenerator (0 or 1)
+jdbcConnection (需要connectionFactory 或 jdbcConnection)
+javaTypeResolver (0 or 1)
+javaModelGenerator (至少1个)
+sqlMapGenerator (0 or 1)
+javaClientGenerator (0 or 1)
+table (1..N)
+https://juejin.cn/post/6844903982582743048
+-->
+<generatorConfiguration>
+    <context id="andi" defaultModelType="flat" targetRuntime="Mybatis3">
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/andi?useSSL=false"
+                        userId="root"
+                        password="123456">
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+        <javaTypeResolver>
+            <!--默认false
+                false，将所有 JDBC 的时间类型解析为 java.util.Date
+                true，将 JDBC 的时间类型按如下规则解析
+                    DATE	                -> java.time.LocalDate
+                    TIME	                -> java.time.LocalTime
+                    TIMESTAMP                   -> java.time.LocalDateTime
+                    TIME_WITH_TIMEZONE  	-> java.time.OffsetTime
+                    TIMESTAMP_WITH_TIMEZONE	-> java.time.OffsetDateTime
+                -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.summer.common.model" targetProject="src\main\java"/>
+        <sqlMapGenerator targetPackage="com.summer.common.model" targetProject="src\main\java"/>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.summer.common.model"
+                             targetProject="src\main\java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+        <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
+        <table schema="andi" tableName="andi_user"
+               domainObjectName="AndiUser">
+            <property name="ignoreQualifiersAtRuntime" value="true"/>
+        </table>
+    </context>
+</generatorConfiguration>

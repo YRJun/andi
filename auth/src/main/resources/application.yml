@@ -1,0 +1,49 @@
+spring:
+  main:
+    banner-mode: off
+mybatis:
+  mapper-locations:
+    - classpath*:com/summer/common/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+hikaricp:
+  common:
+    properties:
+      min-idle: 1
+      max-life-time: 120000
+      idle-time-out: 60000
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    distribution:
+      maximum-expected-value:
+        http:
+          server:
+            requests: 30s
+      percentiles-histogram:
+        http:
+          client:
+            requests: true
+          server:
+            requests: true
+      slo:
+        http:
+          server:
+            requests: 10ms,100ms,1s,10s
+    tags:
+      application: andi-auth
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+pointcut:
+  controller:
+    property: execution(public * com.summer.auth.controller.*Controller.*(..))
+  dao:
+    property: execution(public * com.summer.auth.dao.*Dao.*(..))

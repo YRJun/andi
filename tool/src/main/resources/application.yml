@@ -1,0 +1,25 @@
+spring:
+  main:
+    banner-mode: off
+mybatis:
+  mapper-locations:
+    - classpath*:com/summer/common/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+hikaricp:
+  common:
+    properties:
+      min-idle: 1
+      max-life-time: 120000
+      idle-time-out: 60000
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+pointcut:
+  controller:
+    property: execution(public * com.summer.tool.controller.*Controller.*(..))
+  dao:
+    property: execution(public * com.summer.tool.dao.*Dao.*(..))
+
+

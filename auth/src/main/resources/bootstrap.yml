@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: dev
+  config:
+    name: application
+  application:
+    name: andi-auth

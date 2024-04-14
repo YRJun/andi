@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.summer.common.mapper.AndiUserMapper">
+    <insert id="createUser" parameterType="com.summer.common.model.andi.AndiUser">
+        insert into andi_user (username, `password`, email, full_name, alias_name, country, profile_picture, birthdate, is_active, address, phone, gender)
+        values (#{username}, #{password}, #{email}, #{fullName}, #{aliasName}, #{country}, #{profilePicture}, #{birthdate}, #{isActive}, #{address}, #{phone}, #{gender})
+    </insert>
+
+    <select id="selectUserByUsername" resultType="com.summer.common.model.andi.AndiUser">
+        select * from andi_user where username = #{username}
+    </select>
+</mapper>
