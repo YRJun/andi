@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
  */
 @Target(value = {ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DatasourceTag {
+public @interface SwitchDataSource {
     String value() default Constant.DATASOURCE_ANDI;
 }

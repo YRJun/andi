@@ -1,6 +1,6 @@
 package com.summer.common.dao;
 
-import com.summer.common.config.datasource.DatasourceTag;
+import com.summer.common.config.datasource.SwitchDataSource;
 import com.summer.common.mapper.AndiInterfaceLogMapper;
 import com.summer.common.model.andi.AndiInterfaceLog;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  * @date 2024/01/21 17:02
  */
 @Repository
-@DatasourceTag
+@SwitchDataSource
 public class CommonAndiDAO {
     @Resource
     private SqlSessionTemplate template;

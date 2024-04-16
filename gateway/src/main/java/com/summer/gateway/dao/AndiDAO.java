@@ -1,6 +1,6 @@
 package com.summer.gateway.dao;
 
-import com.summer.common.config.datasource.DatasourceTag;
+import com.summer.common.config.datasource.SwitchDataSource;
 import com.summer.common.mapper.AndiInterfaceLogMapper;
 import com.summer.common.mapper.AndiUserMapper;
 import com.summer.common.model.andi.AndiInterfaceLog;
@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * @date 2024/01/06 12:11
  */
 @Repository
-@DatasourceTag
+@SwitchDataSource
 public class AndiDAO {
     @Resource
     private SqlSessionTemplate template;
