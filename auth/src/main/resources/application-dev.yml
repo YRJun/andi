@@ -28,3 +28,11 @@ spring:
   security:
     user:
       password: 123456
+  elasticsearch:
+    ca-fingerprint: xxx
+    ca-path: D:/Test/ca.crt
+    username: <username>
+    password: <password>
+    uris: localhost:9200
+
+

@@ -26,6 +26,7 @@ management:
         http:
           server:
             requests: 30s
+      # 直方图
       percentiles-histogram:
         http:
           client:
@@ -38,6 +39,13 @@ management:
             requests: 10ms,100ms,1s,10s
     tags:
       application: andi-auth
+      # 为所有指标添加的Common Tags
+      region: local
+      stack: dev
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+# 开启Tomcat的MBean注册表功能，为应用提供JMX监控能力，支持与第三方库集成
 server:
   tomcat:
     mbeanregistry:

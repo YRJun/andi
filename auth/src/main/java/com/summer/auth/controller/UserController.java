@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 
 /**
  * @author Renjun Yu
@@ -27,5 +28,15 @@ public class UserController {
     @RequestMapping(value = "queryUser", method = RequestMethod.POST)
     public AndiResponse<?> queryUser(@RequestBody UserRequest request) {
         return userService.queryUser(request);
+    }
+
+    @Operation(summary = "esTest", description = "es查询测试")
+    @RequestMapping(value = "esTest", method = RequestMethod.POST)
+    public AndiResponse<?> esTest() {
+        try {
+            return userService.esTest();
+        } catch (IOException e) {
+            return AndiResponse.fail(e.getMessage());
+        }
     }
 }

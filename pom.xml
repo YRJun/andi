@@ -42,23 +42,24 @@
         <jackson-databind.version>2.16.1</jackson-databind.version>
         <jackson-core.version>2.16.1</jackson-core.version>
         <jackson-datatype-jsr310.version>2.16.1</jackson-datatype-jsr310.version>
-        <micrometer-tracing.version>1.2.1</micrometer-tracing.version>
-        <micrometer-registry-prometheus.version>1.12.1</micrometer-registry-prometheus.version>
-        <micrometer-core.version>1.12.1</micrometer-core.version>
+        <micrometer-tracing.version>1.2.5</micrometer-tracing.version>
+        <micrometer-registry-prometheus.version>1.12.5</micrometer-registry-prometheus.version>
+        <micrometer-core.version>1.12.5</micrometer-core.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.3.0</springdoc-openapi-starter-webmvc-ui.version>
         <junit-jupiter-api.version>5.10.1</junit-jupiter-api.version>
         <pdfbox.version>3.0.2</pdfbox.version>
         <poi.version>5.2.5</poi.version>
+        <elasticsearch-java>7.17.16</elasticsearch-java>
     </properties>
 
     <!--所有声明在主 pom 的<dependencies>里的依赖都会自动引入，并默认被所有的子模块继承-->
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-devtools</artifactId>-->
+<!--            <scope>runtime</scope>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -212,7 +213,11 @@
                 <artifactId>poi-scratchpad</artifactId>
                 <version>${poi.version}</version>
             </dependency>
-
+<!--            <dependency>
+                <groupId>co.elastic.clients</groupId>
+                <artifactId>elasticsearch-java</artifactId>
+                <version>${elasticsearch-java}</version>
+            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
