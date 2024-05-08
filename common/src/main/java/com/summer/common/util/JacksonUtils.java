@@ -13,7 +13,7 @@ import java.util.concurrent.Callable;
  * @date 2024/01/05 21:10
  */
 @Slf4j
-public class JacksonUtil {
+public class JacksonUtils {
     private final static ObjectMapper OBJECT_MAPPER;
     static {
         //.registerModule(new JavaTimeModule())是为了支持java.time/date 对象，如LocalDate

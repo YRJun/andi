@@ -1,7 +1,7 @@
 package com.summer.tool.service;
 
 import com.summer.common.model.response.AndiResponse;
-import com.summer.common.util.FileUtil;
+import com.summer.common.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.io.RandomAccessReadBufferedFile;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -96,7 +95,7 @@ public class PdfService {
 
     public AndiResponse<?> writePdfAsWord(final MultipartFile file) {
         try {
-            FileUtil.multipartToFile(file, fileTmpPath);
+            FileUtils.multipartToFile(file, fileTmpPath);
         } catch (IOException e) {
             return AndiResponse.fail();
         }
@@ -112,7 +111,7 @@ public class PdfService {
             log.error("pdf转换word失败", e);
             return AndiResponse.fail();
         } finally {
-            FileUtil.deleteFile(fileTmpPath + file.getOriginalFilename());
+            FileUtils.deleteFile(fileTmpPath + file.getOriginalFilename());
         }
 
     }

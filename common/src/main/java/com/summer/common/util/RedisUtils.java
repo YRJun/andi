@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @Component
 @Slf4j
-public class RedisUtil {
+public class RedisUtils {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
     @Value("${spring.data.redis.lock-retry-count}")

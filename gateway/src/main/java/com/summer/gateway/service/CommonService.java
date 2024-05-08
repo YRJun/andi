@@ -2,7 +2,7 @@ package com.summer.gateway.service;
 
 import com.summer.common.model.andi.AndiUser;
 import com.summer.common.model.response.AndiResponse;
-import com.summer.common.util.RedisUtil;
+import com.summer.common.util.RedisUtils;
 import com.summer.gateway.dao.AndiDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class CommonService {
     @Resource
     private AndiDAO andiDao;
     @Resource
-    private RedisUtil redisUtil;
+    private RedisUtils redisUtils;
 
     public AndiResponse<?> test(AndiUser user) {
         log.info("CommonService.test");

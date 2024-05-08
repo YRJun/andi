@@ -1,6 +1,8 @@
 package com.summer.common.util;
 
+import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.net.NetUtil;
+import cn.hutool.core.util.IdUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2024/01/21 17:21
  */
 @Slf4j
-public class OtherUtil {
+public class OtherUtils {
     /**
      * 获取客户端ip,由hutool ServletUtil.getClientIP()方法转换而来,修改了入参HttpServletRequest的包路径
      * @param request HttpServletRequest对象
@@ -34,5 +36,10 @@ public class OtherUtil {
         } catch (Exception e) {
             return "unknown";
         }
+    }
+    public static String getSnowflakeId() {
+        final Snowflake snowflake = IdUtil.getSnowflake();
+        final long l = snowflake.nextId();
+        return String.valueOf(l);
     }
 }

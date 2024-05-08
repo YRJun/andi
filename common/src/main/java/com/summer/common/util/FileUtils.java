@@ -11,7 +11,7 @@ import java.io.IOException;
  * @description
  * @date 2024/03/23 11:18
  */
-public class FileUtil {
+public class FileUtils {
     public static void multipartToFile(MultipartFile multipartFile, String targetPath) throws IOException {
         // 获取文件原名称
         String originalFilename = multipartFile.getOriginalFilename();

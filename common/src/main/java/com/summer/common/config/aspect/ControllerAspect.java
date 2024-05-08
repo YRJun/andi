@@ -5,9 +5,9 @@ import com.summer.common.dao.CommonAndiDAO;
 import com.summer.common.model.andi.AndiInterfaceLog;
 import com.summer.common.model.request.AndiBaseRequest;
 import com.summer.common.model.response.AndiResponse;
-import com.summer.common.util.JacksonUtil;
-import com.summer.common.util.OtherUtil;
-import com.summer.common.util.ThreadPoolUtil;
+import com.summer.common.util.JacksonUtils;
+import com.summer.common.util.OtherUtils;
+import com.summer.common.util.ThreadPoolUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -58,9 +58,9 @@ public class ControllerAspect implements MethodInterceptor {
             response = AndiResponse.fail("服务错误");
         } finally {
             RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-            final String responseStr = JacksonUtil.enCode(response);
+            final String responseStr = JacksonUtils.enCode(response);
             log.info("{}接口返回结果:{}" , methodFullPath, responseStr);
-            ThreadPoolUtil.getThreadPool().execute(new InsertInterfaceLog(new AndiInterfaceLog(), commonAndiDao, methodFullPath, response, startTime, responseStr, invocation, requestAttributes));
+            ThreadPoolUtils.getThreadPool().execute(new InsertInterfaceLog(new AndiInterfaceLog(), commonAndiDao, methodFullPath, response, startTime, responseStr, invocation, requestAttributes));
         }
         return response;
     }
@@ -88,7 +88,7 @@ public class ControllerAspect implements MethodInterceptor {
                 return clazz.cast(argument);
             }
         }
-        log.warn("Method argument is not an instance of " + clazz.getName());
+        log.warn("Method argument is not an instance of {}", clazz.getName());
         return clazz.cast(new AndiBaseRequest());
     }
 
@@ -113,7 +113,7 @@ public class ControllerAspect implements MethodInterceptor {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < invocation.getArguments().length; i++) {
             try {
-                stringBuilder.append(JacksonUtil.enCode(invocation.getArguments()[i])).append(",");
+                stringBuilder.append(JacksonUtils.enCode(invocation.getArguments()[i])).append(",");
             } catch (Exception e) {
                 if (invocation.getArguments()[i] instanceof MultipartFile multipartFile) {
                     stringBuilder.append(multipartFile.getOriginalFilename()).append(",");
@@ -134,7 +134,7 @@ public class ControllerAspect implements MethodInterceptor {
         if (requestAttributes instanceof ServletRequestAttributes servletRequestAttributes) {
             // 如果是 Servlet 环境
             HttpServletRequest httpServletRequest = servletRequestAttributes.getRequest();
-            interfaceLog.setIp(OtherUtil.getClientIP(httpServletRequest));
+            interfaceLog.setIp(OtherUtils.getClientIP(httpServletRequest));
         }
         interfaceLog.setStartTime(startTime);
         interfaceLog.setTimeTaken((int) Duration.between(startTime, interfaceLog.getEndTime()).toMillis());

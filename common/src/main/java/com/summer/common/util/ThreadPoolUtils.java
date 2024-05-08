@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2024/01/21 16:25
  */
 @Slf4j
-public class ThreadPoolUtil {
+public class ThreadPoolUtils {
 
     private static final int DEFAULT_CORE_POOL_SIZE = 1 << 1; //aka 2
     private static final int DEFAULT_MAX_POOL_SIZE = 1 << 4; //aka 16
