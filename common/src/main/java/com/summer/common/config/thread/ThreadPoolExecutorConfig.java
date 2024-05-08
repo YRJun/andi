@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Configuration
 @Slf4j
-public class AndiThreadPoolExecutor {
+public class ThreadPoolExecutorConfig {
 
     private static final int DEFAULT_CORE_POOL_SIZE = 1 << 1; //aka 2
     private static final int DEFAULT_MAX_POOL_SIZE = 1 << 4; //aka 16
