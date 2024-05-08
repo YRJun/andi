@@ -7,7 +7,6 @@ import com.summer.common.model.request.AndiBaseRequest;
 import com.summer.common.model.response.AndiResponse;
 import com.summer.common.util.JacksonUtils;
 import com.summer.common.util.OtherUtils;
-import com.summer.common.util.ThreadPoolUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -25,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author Renjun Yu
@@ -37,9 +37,11 @@ public class ControllerAspect implements MethodInterceptor {
     }
     //当使用 MethodInterceptor 接口实现类时，@Resource 注入的CommonAndiDao为 null 的原因可能与代理的方式以及对象的生命周期有关
     private CommonAndiDAO commonAndiDao;
+    private ThreadPoolExecutor threadPoolExecutor;
 
-    public ControllerAspect(CommonAndiDAO commonAndiDao) {
+    public ControllerAspect(CommonAndiDAO commonAndiDao, ThreadPoolExecutor threadPoolExecutor) {
         this.commonAndiDao = commonAndiDao;
+        this.threadPoolExecutor = threadPoolExecutor;
     }
     @Nullable
     @Override
@@ -60,7 +62,7 @@ public class ControllerAspect implements MethodInterceptor {
             RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
             final String responseStr = JacksonUtils.enCode(response);
             log.info("{}接口返回结果:{}" , methodFullPath, responseStr);
-            ThreadPoolUtils.getThreadPool().execute(new InsertInterfaceLog(new AndiInterfaceLog(), commonAndiDao, methodFullPath, response, startTime, responseStr, invocation, requestAttributes));
+            threadPoolExecutor.execute(new InsertInterfaceLog(new AndiInterfaceLog(), commonAndiDao, methodFullPath, response, startTime, responseStr, invocation, requestAttributes));
         }
         return response;
     }

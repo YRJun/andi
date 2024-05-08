@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author Renjun Yu
@@ -21,12 +22,14 @@ public class PointCutConfig {
     private String daoPointcut;
     @Resource
     private CommonAndiDAO commonAndiDao;
+    @Resource
+    private ThreadPoolExecutor threadPoolExecutor;
 
     @Bean
     public AspectJExpressionPointcutAdvisor controllerPointcutConfig() {
         AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
         advisor.setExpression(controllerPointcut);
-        advisor.setAdvice(new ControllerAspect(commonAndiDao));
+        advisor.setAdvice(new ControllerAspect(commonAndiDao, threadPoolExecutor));
         return advisor;
     }
 
