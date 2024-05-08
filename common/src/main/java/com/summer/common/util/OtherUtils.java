@@ -37,9 +37,16 @@ public class OtherUtils {
             return "unknown";
         }
     }
+
+    /**
+     * hutool生成雪花算法ID，生成的Snowflake对象是全局单例对象
+     * 31是5bit能表达的最大数
+     * @return 雪花算法ID
+     */
     public static String getSnowflakeId() {
-        final Snowflake snowflake = IdUtil.getSnowflake();
-        final long l = snowflake.nextId();
-        return String.valueOf(l);
+        final long dataCenterId = IdUtil.getDataCenterId(31);
+        final long workerId = IdUtil.getWorkerId(dataCenterId, 31);
+        final Snowflake snowflake = IdUtil.getSnowflake(workerId, dataCenterId);
+        return snowflake.nextIdStr();
     }
 }
