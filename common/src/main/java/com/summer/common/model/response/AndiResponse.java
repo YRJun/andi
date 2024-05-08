@@ -53,7 +53,7 @@ public class AndiResponse<T> implements Serializable {
     public AndiResponse<T> withDefaultTraceId() {
         final String traceId = MDC.get(Constant.TRACE_ID);
         if (StringUtils.isNotBlank(traceId)) {
-            this.traceId = traceId.length() < 16 ? traceId :traceId.substring(0, 16);
+            this.traceId = traceId;
         }
         return this;
     }
