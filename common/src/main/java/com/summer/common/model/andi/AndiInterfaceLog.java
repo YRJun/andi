@@ -16,7 +16,6 @@ public class AndiInterfaceLog {
   private String interfaceName;
   private String interfaceDesc;
   private String request;
-  private String response;
   private int responseCode;
   private String username;
   private String ip;

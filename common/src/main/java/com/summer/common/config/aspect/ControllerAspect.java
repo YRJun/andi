@@ -47,9 +47,10 @@ public class ControllerAspect implements MethodInterceptor {
     @Override
     public Object invoke(@Nonnull final MethodInvocation invocation) {
         final String methodFullPath = invocation.getMethod().getDeclaringClass().getName() + "." + invocation.getMethod().getName();
-        log.info("收到接口调用请求:{}", methodFullPath);
-        final AndiBaseRequest request = this.extractAndiBaseRequest(invocation, AndiBaseRequest.class);
-        this.resetTraceIdAndSpanId(request);
+        final String username = "";
+        log.info("收到接口调用请求:{}-{}", username, methodFullPath);
+        final AndiBaseRequest andiBaseRequest = this.extractAndiBaseRequest(invocation, AndiBaseRequest.class);
+        this.resetTraceIdAndSpanId(andiBaseRequest);
 
         final LocalDateTime startTime = LocalDateTime.now();
         AndiResponse<?> response = null;
@@ -62,7 +63,7 @@ public class ControllerAspect implements MethodInterceptor {
             RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
             final String responseStr = JacksonUtils.enCode(response);
             log.info("{}接口返回结果:{}" , methodFullPath, responseStr);
-            threadPoolExecutor.execute(new InsertInterfaceLog(new AndiInterfaceLog(), commonAndiDao, methodFullPath, response, startTime, responseStr, invocation, requestAttributes));
+            threadPoolExecutor.execute(new InsertInterfaceLog(commonAndiDao, methodFullPath, response, startTime, invocation, requestAttributes, username));
         }
         return response;
     }
@@ -102,17 +103,20 @@ public class ControllerAspect implements MethodInterceptor {
         return null;
     }
 
-    private record InsertInterfaceLog(AndiInterfaceLog interfaceLog, CommonAndiDAO commonAndiDao,
+    private record InsertInterfaceLog(CommonAndiDAO commonAndiDao,
                                       String methodFullPath, AndiResponse<?> response,
-                                      LocalDateTime startTime, String responseStr,
-                                      MethodInvocation invocation, RequestAttributes requestAttributes) implements Runnable {
+                                      LocalDateTime startTime, MethodInvocation invocation,
+                                      RequestAttributes requestAttributes, String username) implements Runnable {
         @Override
         public void run() {
-            commonAndiDao.createInterfaceLog(createInterfaceLog(interfaceLog, methodFullPath, response, startTime, responseStr, invocation, requestAttributes));
+            commonAndiDao.createInterfaceLog(createInterfaceLog(methodFullPath, response, startTime, invocation, requestAttributes, username));
         }
     }
 
-    private static AndiInterfaceLog createInterfaceLog(AndiInterfaceLog interfaceLog, String methodFullPath, AndiResponse<?> response, LocalDateTime startTime, String responseStr, MethodInvocation invocation, RequestAttributes requestAttributes) {
+    private static AndiInterfaceLog createInterfaceLog(String methodFullPath, AndiResponse<?> response,
+                                                       LocalDateTime startTime, MethodInvocation invocation,
+                                                       RequestAttributes requestAttributes, String username) {
+        final AndiInterfaceLog interfaceLog = new AndiInterfaceLog();
         interfaceLog.setEndTime(LocalDateTime.now());
         interfaceLog.setInterfaceName(methodFullPath);
         interfaceLog.setInterfaceDesc("");
@@ -132,14 +136,13 @@ public class ControllerAspect implements MethodInterceptor {
                 }
             }
         }
-        //去掉最后一位的逗号
+        //请求参数的StringBuilder去掉最后一位的逗号
         if (!stringBuilder.isEmpty()) {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
         interfaceLog.setRequest(stringBuilder.toString());
-        interfaceLog.setResponse(responseStr);
         interfaceLog.setResponseCode(response != null ? response.getCode() : AndiResponse.RESPONSE_FAIL);
-        interfaceLog.setUsername("");
+        interfaceLog.setUsername(username);
         // 获取当前请求的 RequestAttributes
         if (requestAttributes instanceof ServletRequestAttributes servletRequestAttributes) {
             // 如果是 Servlet 环境

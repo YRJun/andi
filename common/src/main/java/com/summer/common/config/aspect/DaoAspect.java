@@ -21,10 +21,9 @@ public class DaoAspect implements MethodInterceptor {
     public Object invoke(@Nonnull final MethodInvocation invocation) throws Throwable {
         try{
             final Class<?> daoClass = invocation.getMethod().getDeclaringClass();
-            SwitchDataSource[] annotations = daoClass.getAnnotationsByType(SwitchDataSource.class);
-            if (annotations.length != 0) {
-                log.info("--(DaoAspect)current datasource:[{}]--", annotations[0].value());
-                DataSourceHolder.setDataSourceKey(annotations[0].value());
+            final SwitchDataSource annotation = daoClass.getAnnotation(SwitchDataSource.class);
+            if (annotation != null) {
+                DataSourceHolder.setDataSourceKey(annotation.value());
             }
             return invocation.proceed();
         } catch (Exception e) {
