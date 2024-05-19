@@ -14,7 +14,7 @@ public abstract class MdcTaskUtils {
 
     /**
      * 采用装饰者模式，装饰原生的 Runnable runnable 对象，在原生 Runnable 对象执行前，
-     * 将父线程的 MDC 设置到子线程中，在原生 Runnable 对象执行结束后，清除子线程 MDC 中的内容。
+     * 将父线程的 MDC 设置到子线程中，在afterExecute执行结束后，清除子线程 MDC 中的内容。
      * @param runnable runnable 对象
      * @param parentThreadContextMap 主线程上下文映射的副本
      * @return Runnable 对象
@@ -28,11 +28,7 @@ public abstract class MdcTaskUtils {
             } else {
                 MDC.put(Constant.TRACE_ID, parentThreadContextMap.get(Constant.TRACE_ID));
             }
-            try {
-                runnable.run();
-            } finally {
-                MDC.remove(Constant.TRACE_ID);
-            }
+            runnable.run();
         };
     }
 }

@@ -1,5 +1,6 @@
 package com.summer.common.config.thread;
 
+import com.summer.common.constant.Constant;
 import com.summer.common.util.MdcTaskUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -22,5 +23,17 @@ public class MdcAwareThreadPoolExecutor extends ThreadPoolExecutor {
     public void execute(Runnable command) {
         Map<String, String> parentThreadContextMap = MDC.getCopyOfContextMap();
         super.execute(MdcTaskUtils.adaptMdcRunnable(command, parentThreadContextMap));
+    }
+
+    @Override
+    protected void afterExecute(Runnable r, Throwable t) {
+        try {
+            super.afterExecute(r, t);
+            if (t != null) {
+                log.error("Exception in thread pool", t);
+            }
+        } finally {
+            MDC.remove(Constant.TRACE_ID);
+        }
     }
 }

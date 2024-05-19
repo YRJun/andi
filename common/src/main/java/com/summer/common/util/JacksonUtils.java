@@ -25,11 +25,11 @@ public class JacksonUtils {
     public static <T> T tryParse(Callable<T> parser) {
         return tryParse(parser, JsonParseException.class);
     }
-    public static <T> T tryParse(Callable<T> parser, Class<? extends Exception> check) {
+    public static <T> T tryParse(Callable<T> parser, Class<? extends Exception> clazz) {
         try {
             return parser.call();
         } catch (Exception ex) {
-            if (check.isAssignableFrom(ex.getClass())) {
+            if (clazz.isAssignableFrom(ex.getClass())) {
                 throw new JsonParseException(ex);
             }
             throw new IllegalStateException(ex);

@@ -42,8 +42,8 @@ https://juejin.cn/post/6844903982582743048
         </javaTypeResolver>
 
         <javaModelGenerator targetPackage="com.summer.common.model" targetProject="src\main\java"/>
-        <sqlMapGenerator targetPackage="com.summer.common.model" targetProject="src\main\java"/>
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.summer.common.model"
+        <sqlMapGenerator targetPackage="com.summer.common.mapper" targetProject="src\main\java"/>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.summer.common.mapper"
                              targetProject="src\main\java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>

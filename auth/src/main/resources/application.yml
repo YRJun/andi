@@ -1,6 +1,9 @@
 spring:
   main:
     banner-mode: off
+  threads:
+    virtual:
+      enabled: true
 mybatis:
   mapper-locations:
     - classpath*:com/summer/common/mapper/**/*.xml
@@ -22,29 +25,21 @@ management:
         include: '*'
   metrics:
     distribution:
-      maximum-expected-value:
-        http:
-          server:
-            requests: 30s
-      # 直方图
       percentiles-histogram:
-        http:
-          client:
-            requests: true
-          server:
-            requests: true
+        http.server.requests: true
+        http.client.requests: true
       slo:
-        http:
-          server:
-            requests: 10ms,100ms,1s,10s
+        http.server.requests: 10ms,100ms,1s,10s
+      maximum-expected-value:
+        http.server.requests: 30s
     tags:
       application: andi-auth
       # 为所有指标添加的Common Tags
       region: local
       stack: dev
-  zipkin:
-    tracing:
-      endpoint: http://localhost:9411/api/v2/spans
+#  zipkin:
+#    tracing:
+#      endpoint: http://localhost:9411/api/v2/spans
 # 开启Tomcat的MBean注册表功能，为应用提供JMX监控能力，支持与第三方库集成
 server:
   tomcat:

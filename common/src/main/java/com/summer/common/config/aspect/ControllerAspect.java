@@ -68,6 +68,9 @@ public class ControllerAspect implements MethodInterceptor {
     }
 
     public void resetTraceIdAndSpanId(AndiBaseRequest request) {
+        if (request == null) {
+            return;
+        }
         if (StringUtils.isNotBlank(request.getTraceId())) {
             MDC.put(Constant.TRACE_ID, request.getTraceId());
         }
@@ -91,7 +94,12 @@ public class ControllerAspect implements MethodInterceptor {
             }
         }
         log.warn("Method argument is not an instance of {}", clazz.getName());
-        return clazz.cast(new AndiBaseRequest());
+        try {
+            return clazz.cast(clazz.getDeclaredConstructor().newInstance());
+        } catch (Exception e) {
+            log.warn("No default constructor found for {}", clazz.getName());
+        }
+        return null;
     }
 
     private record InsertInterfaceLog(AndiInterfaceLog interfaceLog, CommonAndiDAO commonAndiDao,

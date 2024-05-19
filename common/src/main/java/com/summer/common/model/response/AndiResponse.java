@@ -28,19 +28,19 @@ public class AndiResponse<T> implements Serializable {
     public static final int RESPONSE_EXCEPTION = -1111;
 
 
-    @Schema(name = "追踪流水号")
+    @Schema(name = "traceId", description = "追踪ID")
     private String traceId;
 
-    @Schema(name = "spanId")
+    @Schema(name = "spanId", description = "spanId")
     private String spanId;
 
-    @Schema(name = "响应码")
+    @Schema(name = "code", description = "响应码")
     private int code;
 
-    @Schema(name = "响应描述")
+    @Schema(name = "msg", description = "响应描述")
     private String msg;
 
-    @Schema(name = "响应对象")
+    @Schema(name = "data", description = "响应对象")
     private T data;
 
     public AndiResponse<T> withTraceId(String traceId) {

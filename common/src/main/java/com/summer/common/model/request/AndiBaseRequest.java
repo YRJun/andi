@@ -11,8 +11,8 @@ import lombok.Data;
 @Data
 @Schema(name = "基础接口请求对象")
 public class AndiBaseRequest {
-    @Schema(name = "traceId")
+    @Schema(name = "traceId", description = "追踪ID")
     private String traceId;
-    @Schema(name = "spanId")
+    @Schema(name = "spanId", description = "spanId")
     private String spanId;
 }
