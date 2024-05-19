@@ -3,10 +3,10 @@ package com.summer.auth.dao;
 import com.summer.common.config.datasource.SwitchDataSource;
 import com.summer.common.mapper.AndiUserMapper;
 import com.summer.common.model.andi.AndiUser;
+import jakarta.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 
 /**
  * @author Renjun Yu

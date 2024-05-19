@@ -1,11 +1,11 @@
 package com.summer.common.config.aspect;
 
 import com.summer.common.dao.CommonAndiDAO;
+import jakarta.annotation.Resource;
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import javax.annotation.Resource;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**

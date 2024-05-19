@@ -2,6 +2,7 @@ package com.summer.common.config.datasource;
 
 import com.summer.common.constant.Constant;
 import com.zaxxer.hikari.HikariDataSource;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -9,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
