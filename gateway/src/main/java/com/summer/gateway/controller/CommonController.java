@@ -6,9 +6,8 @@ import com.summer.common.model.response.AndiResponse;
 import com.summer.gateway.service.CommonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 
 /**
  * @author Renjun Yu

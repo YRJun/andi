@@ -5,10 +5,9 @@ import com.summer.common.mapper.AndiInterfaceLogMapper;
 import com.summer.common.mapper.AndiUserMapper;
 import com.summer.common.model.andi.AndiInterfaceLog;
 import com.summer.common.model.andi.AndiUser;
+import jakarta.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
-
-import javax.annotation.Resource;
 
 /**
  * @author Renjun Yu

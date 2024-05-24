@@ -21,7 +21,7 @@ public class MdcAwareThreadPoolExecutor extends ThreadPoolExecutor {
 
     @Override
     public void execute(Runnable command) {
-        Map<String, String> parentThreadContextMap = MDC.getCopyOfContextMap();
+        final Map<String, String> parentThreadContextMap = MDC.getCopyOfContextMap();
         super.execute(MdcTaskUtils.adaptMdcRunnable(command, parentThreadContextMap));
     }
 

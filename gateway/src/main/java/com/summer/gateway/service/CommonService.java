@@ -4,10 +4,9 @@ import com.summer.common.model.andi.AndiUser;
 import com.summer.common.model.response.AndiResponse;
 import com.summer.common.util.RedisUtils;
 import com.summer.gateway.dao.AndiDAO;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * @author Renjun Yu

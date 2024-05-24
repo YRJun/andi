@@ -16,8 +16,8 @@ import java.io.IOException;
  * @date 2024/01/20 14:12
  */
 @RestController
-@RequestMapping("user-management")
-@Tag(name = "UserController", description = "用户管理")
+@RequestMapping("test-management")
+@Tag(name = "TestController", description = "测试管理")
 public class TestController {
 
     @Resource

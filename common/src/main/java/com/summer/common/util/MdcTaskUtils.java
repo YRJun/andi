@@ -3,6 +3,8 @@ package com.summer.common.util;
 import com.summer.common.constant.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.util.CollectionUtils;
+
 import java.util.Map;
 
 /**
@@ -22,7 +24,7 @@ public abstract class MdcTaskUtils {
     public static Runnable adaptMdcRunnable(Runnable runnable, Map<String, String> parentThreadContextMap) {
         return () -> {
             log.debug("parentThreadContextMap: {}, currentThreadContextMap: {}", parentThreadContextMap, MDC.getCopyOfContextMap());
-            if (parentThreadContextMap.isEmpty() || !parentThreadContextMap.containsKey(Constant.TRACE_ID)) {
+            if (CollectionUtils.isEmpty(parentThreadContextMap) || !parentThreadContextMap.containsKey(Constant.TRACE_ID)) {
                 log.debug("can not find a parentThreadContextMap, maybe task is fired using async or schedule task.");
                 MDC.put(Constant.TRACE_ID, OtherUtils.getSnowflakeId());
             } else {
