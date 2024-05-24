@@ -98,7 +98,7 @@ public class ControllerAspect implements MethodInterceptor {
         try {
             return clazz.cast(clazz.getDeclaredConstructor().newInstance());
         } catch (Exception e) {
-            log.warn("No default constructor found for {}", clazz.getName());
+            log.debug("No default constructor found for {}", clazz.getName());
         }
         return null;
     }

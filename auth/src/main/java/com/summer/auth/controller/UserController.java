@@ -21,7 +21,7 @@ public class UserController {
     private UserService userService;
 
     @Operation(summary = "queryUser", description = "查询用户")
-    @RequestMapping(value = "users/{username}", method = RequestMethod.POST)
+    @RequestMapping(value = "users/{username}", method = RequestMethod.GET)
     public AndiResponse<?> queryUser(@PathVariable final String username) {
         return userService.queryUser(username);
     }
