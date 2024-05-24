@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
+import org.springframework.data.elasticsearch.support.HttpHeaders;
 
 import javax.net.ssl.SSLContext;
 import java.io.File;
@@ -15,7 +16,7 @@ import java.io.IOException;
  * @date 2024/03/26 09:59
  * {@link EsTest 和此类都可以连接ES,二选一}
  */
-@Configuration
+//@Configuration
 public class ElasticsearchConfig extends ElasticsearchConfiguration {
 
     @Value("${spring.elasticsearch.uris}")
@@ -36,6 +37,8 @@ public class ElasticsearchConfig extends ElasticsearchConfiguration {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        // 使用手动拼http请求到es时需要的认证信息
+        //final String s = HttpHeaders.encodeBasicAuth(username, password);
         // 使用构建器来提供集群地址
         return ClientConfiguration.builder()
                 // 设置连接地址
