@@ -44,6 +44,7 @@
         <micrometer-registry-prometheus.version>1.13.0</micrometer-registry-prometheus.version>
         <springdoc-ui.version>2.5.0</springdoc-ui.version>
         <junit-jupiter-api.version>5.10.1</junit-jupiter-api.version>
+        <httpclient.version>5.3.1</httpclient.version>
         <pdfbox.version>3.0.2</pdfbox.version>
         <poi.version>5.2.5</poi.version>
     </properties>
@@ -156,6 +157,11 @@
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-scratchpad</artifactId>
                 <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents.client5</groupId>
+                <artifactId>httpclient5</artifactId>
+                <version>${httpclient.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

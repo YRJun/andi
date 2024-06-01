@@ -1,12 +1,10 @@
 package com.summer.gateway;
 
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -18,7 +16,6 @@ import reactor.core.publisher.Hooks;
  * @date 2024/01/06 11:02
  */
 @SpringBootApplication(exclude = {ThymeleafAutoConfiguration.class, DataSourceAutoConfiguration.class})
-@EnableFeignClients(basePackages = "com.summer.common.feign")
 @EnableScheduling
 @EnableAsync
 @ComponentScan(basePackages = "com.summer.common")
