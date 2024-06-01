@@ -28,11 +28,18 @@ spring:
   security:
     user:
       password: 123456
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          authority-prefix: ANDI_
+#          principal-claim-name: sub
+#          authorities-claim-name:
   elasticsearch:
-    ca-fingerprint: xxx
-    ca-path: D:/Test/ca.crt
-    username: <username>
-    password: <password>
-    uris: localhost:9200
+    username: elastic
+    password: 123
+    uris: 127.0.0.1:9200
+    restclient:
+      ssl:
+        bundle:
 
 

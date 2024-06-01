@@ -23,7 +23,8 @@ import java.io.File;
  * @date 2024/04/21 18:19
  * {@link ElasticsearchConfig 和此类都可以连接ES,二选一}
  */
-@Component
+@Deprecated
+//@Component
 @Slf4j
 public class EsTest {
     @Value("${spring.elasticsearch.uris}")

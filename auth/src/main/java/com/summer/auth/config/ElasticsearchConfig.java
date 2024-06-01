@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
-import org.springframework.data.elasticsearch.support.HttpHeaders;
 
 import javax.net.ssl.SSLContext;
 import java.io.File;
@@ -16,6 +15,7 @@ import java.io.IOException;
  * @date 2024/03/26 09:59
  * {@link EsTest 和此类都可以连接ES,二选一}
  */
+@Deprecated
 //@Configuration
 public class ElasticsearchConfig extends ElasticsearchConfiguration {
 
