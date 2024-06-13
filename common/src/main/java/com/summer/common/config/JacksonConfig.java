@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 /**
  * @author Renjun Yu
@@ -56,6 +57,8 @@ public class JacksonConfig implements Jackson2ObjectMapperBuilderCustomizer, Ord
         // 全局转化Long类型为String，解决序列化后传入前端Long类型精度丢失问题
         builder.serializerByType(BigInteger.class, ToStringSerializer.instance);
         builder.serializerByType(Long.class, ToStringSerializer.instance);
+
+        builder.timeZone(TimeZone.getTimeZone("GMT+8"));
     }
 
     @Override
