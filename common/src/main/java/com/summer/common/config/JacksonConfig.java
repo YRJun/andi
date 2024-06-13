@@ -36,9 +36,6 @@ public class JacksonConfig implements Jackson2ObjectMapperBuilderCustomizer, Ord
      */
     @Override
     public void customize(Jackson2ObjectMapperBuilder builder) {
-        // 设置java.util.Date时间类的序列化以及反序列化的格式
-        //builder.simpleDateFormat(Constant.DATETIME_FORMAT);
-
         // JSR 310日期时间处理
         JavaTimeModule javaTimeModule = new JavaTimeModule();
 
@@ -58,7 +55,7 @@ public class JacksonConfig implements Jackson2ObjectMapperBuilderCustomizer, Ord
 
         // 全局转化Long类型为String，解决序列化后传入前端Long类型精度丢失问题
         builder.serializerByType(BigInteger.class, ToStringSerializer.instance);
-        builder.serializerByType(Long.class,ToStringSerializer.instance);
+        builder.serializerByType(Long.class, ToStringSerializer.instance);
     }
 
     @Override

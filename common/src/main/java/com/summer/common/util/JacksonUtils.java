@@ -1,9 +1,9 @@
 package com.summer.common.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.json.JsonParseException;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.util.concurrent.Callable;
 
@@ -14,10 +14,10 @@ import java.util.concurrent.Callable;
  */
 @Slf4j
 public class JacksonUtils {
-    private final static ObjectMapper OBJECT_MAPPER;
+    private static final ObjectMapper OBJECT_MAPPER;
     static {
-        //.registerModule(new JavaTimeModule())是为了支持java.time/date 对象，如LocalDate
-        OBJECT_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
+        final Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+        OBJECT_MAPPER = builder.build();
     }
     public static ObjectMapper getObjectMapper() {
         return OBJECT_MAPPER;

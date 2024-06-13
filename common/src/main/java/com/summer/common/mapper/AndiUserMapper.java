@@ -2,6 +2,8 @@ package com.summer.common.mapper;
 
 import com.summer.common.model.andi.AndiUser;
 
+import java.util.List;
+
 /**
  * @author Renjun Yu
  * @description
@@ -10,5 +12,5 @@ import com.summer.common.model.andi.AndiUser;
 public interface AndiUserMapper {
     int createUser(AndiUser user);
 
-    AndiUser selectUserByUsername(String username);
+    List<AndiUser> selectUserByUsername(String username);
 }

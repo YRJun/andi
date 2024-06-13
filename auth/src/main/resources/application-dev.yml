@@ -25,21 +25,17 @@ spring:
       database: 0
       lock-retry-count: 3
       lock-time: 60000
-  security:
-    user:
-      password: 123456
-#    oauth2:
-#      resourceserver:
-#        jwt:
-#          authority-prefix: ANDI_
-#          principal-claim-name: sub
-#          authorities-claim-name:
   elasticsearch:
     username: elastic
     password: 123
-    uris: 127.0.0.1:9200
+    uris: https://elastic.test.com:9200
     restclient:
       ssl:
-        bundle:
-
+        bundle: elasticsearch
+  ssl:
+    bundle:
+      pem:
+        elasticsearch:
+          truststore:
+            certificate: D:/Test/ca.crt
 

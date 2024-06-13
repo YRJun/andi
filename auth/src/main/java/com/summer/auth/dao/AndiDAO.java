@@ -6,6 +6,9 @@ import com.summer.common.model.andi.AndiUser;
 import jakarta.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 
 /**
@@ -26,6 +29,10 @@ public class AndiDAO {
  
     public AndiUser queryUserByUsername(String username) {
         final AndiUserMapper mapper = template.getMapper(AndiUserMapper.class);
-        return mapper.selectUserByUsername(username);
+        final List<AndiUser> andiUserList = mapper.selectUserByUsername(username);
+        if (!CollectionUtils.isEmpty(andiUserList)) {
+            return andiUserList.getFirst();
+        }
+        return null;
     }
 }
