@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
+ * 自定义的 {@link org.springframework.security.provisioning.UserDetailsManager UserDetailsManager},
+ * 由于已经使用{@link org.springframework.stereotype.Component @Component}注册为bean,
+ * 因此在{@link com.summer.auth.config.SecurityConfig SecurityConfig}中不需要再另外注册bean,
+ * 否则就需要自定义{@link org.springframework.security.authentication.AuthenticationProvider AuthenticationProvider}
  * @author Renjun Yu
  * @date 2024/06/12 10:56
  */

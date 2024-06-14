@@ -38,4 +38,6 @@ spring:
         elasticsearch:
           truststore:
             certificate: D:/Test/ca.crt
-
+app:
+  security:
+    bcrypt-log2-rounds: 10
