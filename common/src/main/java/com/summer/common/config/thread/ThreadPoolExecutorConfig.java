@@ -1,7 +1,11 @@
 package com.summer.common.config.thread;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.extern.slf4j.Slf4j;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,17 +18,20 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2024/01/21 16:25
  */
 @Configuration
-@Slf4j
 public class ThreadPoolExecutorConfig {
+    private static final Logger log = LoggerFactory.getLogger(ThreadPoolExecutorConfig.class);
 
-    private static final int DEFAULT_CORE_POOL_SIZE = 1 << 1; //aka 2
-    private static final int DEFAULT_MAX_POOL_SIZE = 1 << 4; //aka 16
-    private static final long DEFAULT_KEEP_ALIVE_TIME = 5 * 60 * 1000;
-    private static final int DEFAULT_WORK_QUEUE_CAPACITY = 1024;
+    private static final int DEFAULT_CORE_POOL_SIZE = 1 << 1; // aka 2
+    private static final int DEFAULT_MAX_POOL_SIZE = 1 << 4; // aka 16
+    private static final long DEFAULT_KEEP_ALIVE_TIME = 60 * 1000;
+    private static final int DEFAULT_WORK_QUEUE_CAPACITY = 1 << 7; // aka 128
+
+    @Resource
+    private MeterRegistry meterRegistry;
 
     @Bean("threadPoolExecutor")
     public MdcAwareThreadPoolExecutor threadPoolExecutor() {
-        return new MdcAwareThreadPoolExecutor(
+        final MdcAwareThreadPoolExecutor threadPoolExecutor = new MdcAwareThreadPoolExecutor(
                 DEFAULT_CORE_POOL_SIZE,
                 DEFAULT_MAX_POOL_SIZE,
                 DEFAULT_KEEP_ALIVE_TIME,
@@ -33,6 +40,9 @@ public class ThreadPoolExecutorConfig {
                 new CustomThreadFactory(),
                 new CallerRunsPolicy()
         );
+        // 注册线程池的metrics
+        ExecutorServiceMetrics.monitor(meterRegistry, threadPoolExecutor, "mdcAwareThreadPoolExecutor");
+        return threadPoolExecutor;
     }
 
     /**
@@ -41,9 +51,8 @@ public class ThreadPoolExecutorConfig {
     private static class CustomThreadFactory implements ThreadFactory {
         private static final String THREAD_NAME_PREFIX = "andi-thread-";
         private final AtomicInteger threadCount = new AtomicInteger(1);
-
         @Override
-        public Thread newThread(@NotNull Runnable r) {
+        public Thread newThread(@Nonnull Runnable r) {
             Thread thread = new Thread(r, THREAD_NAME_PREFIX + threadCount.getAndIncrement());
             thread.setDaemon(false);
             return thread;

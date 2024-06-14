@@ -1,5 +1,6 @@
 package com.summer.common.config;
 
+import com.summer.common.repository.RepositoryService;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
@@ -29,9 +30,9 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 public class RestClientConfig {
-    private String baseUrl;
-    private String basePath;
-    private Integer readTimeout;
+    private String baseUrl = "http://127.0.0.1:1001";
+    private String basePath = "";
+    private Integer readTimeout = 60 * 1000;
 
     /**
      * 自定义HttpClient，除responseTimeout之外，其他配置都使用{@link HttpClients#createSystem()}相同的默认配置
@@ -54,7 +55,7 @@ public class RestClientConfig {
     }
 
     @Bean("repositoryService")
-    public Object repositoryService() {
+    public RepositoryService repositoryService() {
         RestClient restClient = RestClient.builder()
                 .requestFactory(new HttpComponentsClientHttpRequestFactory(this.customHttpClient()))
                 .baseUrl(baseUrl + basePath)
@@ -64,6 +65,6 @@ public class RestClientConfig {
                 .build();
         final RestClientAdapter adapter = RestClientAdapter.create(restClient);
         final HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
-        return factory.createClient(Object.class);
+        return factory.createClient(RepositoryService.class);
     }
 }

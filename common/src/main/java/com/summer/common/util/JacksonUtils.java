@@ -1,29 +1,32 @@
 package com.summer.common.util;
 
+import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.util.ReflectionUtils;
 
 import java.util.concurrent.Callable;
 
 /**
+ * jackson工具类，仿照{@link org.springframework.boot.json.AbstractJsonParser AbstractJsonParser}
  * @author Renjun Yu
- * @description jackson工具类
  * @date 2024/01/05 21:10
  */
-@Slf4j
 public class JacksonUtils {
-    private static final ObjectMapper OBJECT_MAPPER;
+    private static ObjectMapper OBJECT_MAPPER;
     static {
-        final Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
-        OBJECT_MAPPER = builder.build();
+        // new ObjectMapper()会不使用JacksonConfig的jackson配置
+        OBJECT_MAPPER = new Jackson2ObjectMapperBuilder().build();
     }
-    public static ObjectMapper getObjectMapper() {
+    private static ObjectMapper getObjectMapper() {
+        if (OBJECT_MAPPER == null) {
+            OBJECT_MAPPER = new Jackson2ObjectMapperBuilder().build();
+        }
         return OBJECT_MAPPER;
     }
     public static <T> T tryParse(Callable<T> parser) {
-        return tryParse(parser, JsonParseException.class);
+        return tryParse(parser, JacksonException.class);
     }
     public static <T> T tryParse(Callable<T> parser, Class<? extends Exception> clazz) {
         try {
@@ -32,10 +35,15 @@ public class JacksonUtils {
             if (clazz.isAssignableFrom(ex.getClass())) {
                 throw new JsonParseException(ex);
             }
+            ReflectionUtils.rethrowRuntimeException(ex);
             throw new IllegalStateException(ex);
         }
     }
-    public static String enCode(Object value) {
+    public static String writeValueAsString(Object value) {
         return tryParse(() -> getObjectMapper().writeValueAsString(value));
+    }
+
+    public static <T> T readValue(String content, Class<T> valueType) {
+        return tryParse(() -> getObjectMapper().readValue(content, valueType));
     }
 }

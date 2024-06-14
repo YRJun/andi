@@ -8,10 +8,11 @@ import com.summer.common.model.response.AndiResponse;
 import com.summer.common.util.JacksonUtils;
 import com.summer.common.util.OtherUtils;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -31,8 +32,9 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @description
  * @date 2024/01/21 11:49
  */
-@Slf4j
 public class ControllerAspect implements MethodInterceptor {
+    private static final Logger log = LoggerFactory.getLogger(ControllerAspect.class);
+
     public ControllerAspect() {
     }
     //当使用 MethodInterceptor 接口实现类时，@Resource 注入的CommonAndiDao为 null 的原因可能与代理的方式以及对象的生命周期有关
@@ -45,7 +47,7 @@ public class ControllerAspect implements MethodInterceptor {
     }
     @Nullable
     @Override
-    public Object invoke(@Nonnull final MethodInvocation invocation) {
+    public Object invoke(@Nonnull final MethodInvocation invocation) throws Throwable {
         final String methodFullPath = invocation.getMethod().getDeclaringClass().getName() + "." + invocation.getMethod().getName();
         final String username = "";
         log.info("收到接口调用请求:{}-{}", username, methodFullPath);
@@ -57,12 +59,12 @@ public class ControllerAspect implements MethodInterceptor {
         try {
             response = (AndiResponse<?>) invocation.proceed();
         } catch (Throwable e) {
-            log.error("--(ControllerAspect) error", e);
-            response = AndiResponse.fail("服务错误");
+            response = AndiResponse.fail("服务错误", e.getMessage());
+            throw e;
         } finally {
             RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-            final String responseStr = JacksonUtils.enCode(response);
-            log.info("{}接口返回结果:{}" , methodFullPath, responseStr);
+//            final String responseStr = JacksonUtils.writeValueAsString(response);
+//            log.info("{}接口返回结果:{}" , methodFullPath, responseStr);
             threadPoolExecutor.execute(new InsertInterfaceLog(commonAndiDao, methodFullPath, response, startTime, invocation, requestAttributes, username));
         }
         return response;
@@ -94,7 +96,7 @@ public class ControllerAspect implements MethodInterceptor {
                 return clazz.cast(argument);
             }
         }
-        log.warn("Method argument is not an instance of {}", clazz.getName());
+        log.debug("Method argument is not an instance of {}", clazz.getName());
         try {
             return clazz.cast(clazz.getDeclaredConstructor().newInstance());
         } catch (Exception e) {
@@ -127,7 +129,7 @@ public class ControllerAspect implements MethodInterceptor {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < invocation.getArguments().length; i++) {
             try {
-                stringBuilder.append(JacksonUtils.enCode(invocation.getArguments()[i])).append(",");
+                stringBuilder.append(JacksonUtils.writeValueAsString(invocation.getArguments()[i])).append(",");
             } catch (Exception e) {
                 if (invocation.getArguments()[i] instanceof MultipartFile multipartFile) {
                     stringBuilder.append(multipartFile.getOriginalFilename()).append(",");

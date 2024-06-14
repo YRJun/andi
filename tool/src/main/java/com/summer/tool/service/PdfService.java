@@ -103,7 +103,7 @@ public class PdfService {
             PDFTextStripper stripper = new PDFTextStripper();
             String text = stripper.getText(pdfDocument);
             // 创建Word文档
-            new XWPFDocument();
+            //new XWPFDocument();
             // 添加文本到Word文档
 
             return AndiResponse.success(text);

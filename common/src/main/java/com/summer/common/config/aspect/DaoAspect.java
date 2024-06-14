@@ -26,9 +26,6 @@ public class DaoAspect implements MethodInterceptor {
                 DataSourceHolder.setDataSourceKey(annotation.value());
             }
             return invocation.proceed();
-        } catch (Exception e) {
-            log.error("--(DaoAspect) error--", e);
-            return null;
         } finally {
             DataSourceHolder.removeDataSourceKey();
         }

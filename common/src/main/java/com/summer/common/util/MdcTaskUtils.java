@@ -1,5 +1,6 @@
 package com.summer.common.util;
 
+import cn.hutool.core.util.IdUtil;
 import com.summer.common.constant.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -23,12 +24,14 @@ public abstract class MdcTaskUtils {
      */
     public static Runnable adaptMdcRunnable(Runnable runnable, Map<String, String> parentThreadContextMap) {
         return () -> {
-            log.debug("parentThreadContextMap: {}, currentThreadContextMap: {}", parentThreadContextMap, MDC.getCopyOfContextMap());
             if (CollectionUtils.isEmpty(parentThreadContextMap) || !parentThreadContextMap.containsKey(Constant.TRACE_ID)) {
                 log.debug("can not find a parentThreadContextMap, maybe task is fired using async or schedule task.");
-                MDC.put(Constant.TRACE_ID, OtherUtils.getSnowflakeId());
+                final String traceId = IdUtil.fastSimpleUUID();
+                MDC.put(Constant.TRACE_ID, traceId);
+                MDC.put(Constant.SPAN_ID, traceId);
             } else {
                 MDC.put(Constant.TRACE_ID, parentThreadContextMap.get(Constant.TRACE_ID));
+                MDC.put(Constant.SPAN_ID, parentThreadContextMap.get(Constant.SPAN_ID));
             }
             runnable.run();
         };
