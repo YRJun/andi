@@ -1,9 +1,10 @@
 spring:
   main:
     banner-mode: off
-  threads:
-    virtual:
-      enabled: true
+  # 启用虚拟线程后，ThreadPoolTaskExecutor不会auto-configure
+#  threads:
+#    virtual:
+#      enabled: true
 mybatis:
   mapper-locations:
     - classpath*:com/summer/common/mapper/**/*.xml
@@ -50,3 +51,7 @@ pointcut:
     property: execution(public * com.summer.auth.controller.*Controller.*(..))
   dao:
     property: execution(public * com.summer.auth.dao.*Dao.*(..))
+logging:
+  level:
+    # 指定了日志配置的应用范围，这里是针对org.springframework.security包下的所有类。trace: 是日志级别的一种，表示最详细的日志输出级别
+    org.springframework.security: TRACE

@@ -3,8 +3,6 @@ package com.summer.auth;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -14,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @description
  * @date 2024/01/06 16:05
  */
-@SpringBootApplication(exclude = {ThymeleafAutoConfiguration.class, DataSourceAutoConfiguration.class})
+@SpringBootApplication
 @EnableScheduling
 @EnableAsync
 @ComponentScan(basePackages = {"com.summer.common"})

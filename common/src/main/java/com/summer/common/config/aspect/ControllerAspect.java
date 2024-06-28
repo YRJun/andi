@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -25,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author Renjun Yu
@@ -37,13 +37,13 @@ public class ControllerAspect implements MethodInterceptor {
 
     public ControllerAspect() {
     }
-    //当使用 MethodInterceptor 接口实现类时，@Resource 注入的CommonAndiDao为 null 的原因可能与代理的方式以及对象的生命周期有关
+    // 当使用 MethodInterceptor 接口实现类时，@Resource 注入的CommonAndiDao为 null 的原因可能与代理的方式以及对象的生命周期有关
     private CommonAndiDAO commonAndiDao;
-    private ThreadPoolExecutor threadPoolExecutor;
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
-    public ControllerAspect(CommonAndiDAO commonAndiDao, ThreadPoolExecutor threadPoolExecutor) {
+    public ControllerAspect(CommonAndiDAO commonAndiDao, ThreadPoolTaskExecutor threadPoolTaskExecutor) {
         this.commonAndiDao = commonAndiDao;
-        this.threadPoolExecutor = threadPoolExecutor;
+        this.threadPoolTaskExecutor = threadPoolTaskExecutor;
     }
     @Nullable
     @Override
@@ -65,7 +65,7 @@ public class ControllerAspect implements MethodInterceptor {
             RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 //            final String responseStr = JacksonUtils.writeValueAsString(response);
 //            log.info("{}接口返回结果:{}" , methodFullPath, responseStr);
-            threadPoolExecutor.execute(new InsertInterfaceLog(commonAndiDao, methodFullPath, response, startTime, invocation, requestAttributes, username));
+            threadPoolTaskExecutor.execute(new InsertInterfaceLog(commonAndiDao, methodFullPath, response, startTime, invocation, requestAttributes, username));
         }
         return response;
     }
@@ -96,11 +96,11 @@ public class ControllerAspect implements MethodInterceptor {
                 return clazz.cast(argument);
             }
         }
-        log.debug("Method argument is not an instance of {}", clazz.getName());
+        log.debug("Method argument is not an instance of [{}]", clazz.getName());
         try {
             return clazz.cast(clazz.getDeclaredConstructor().newInstance());
         } catch (Exception e) {
-            log.debug("No default constructor found for {}", clazz.getName());
+            log.debug("No default constructor found for [{}]", clazz.getName());
         }
         return null;
     }

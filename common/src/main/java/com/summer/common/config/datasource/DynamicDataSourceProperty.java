@@ -18,12 +18,12 @@ import java.util.List;
 @Data
 @Slf4j
 @Configuration
-@ConfigurationProperties(prefix = "spring.dynamic-datasource", ignoreInvalidFields=true)
+@ConfigurationProperties(prefix = "spring.dynamic-datasource", ignoreInvalidFields = true)
 public class DynamicDataSourceProperty {
     /**
      * 多数据源数据库配置
      */
-    public List<DataSourceConfigModel> dataSourceList = new ArrayList<>();
+    private List<DataSourceConfigModel> dataSourceList = new ArrayList<>();
 
     @PostConstruct
     public void postConstruct() {

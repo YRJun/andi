@@ -2,7 +2,7 @@ package com.summer.common.config.aspect;
 
 import com.summer.common.config.datasource.DataSourceHolder;
 import com.summer.common.config.datasource.SwitchDataSource;
-import lombok.extern.slf4j.Slf4j;
+import com.summer.common.constant.Constant;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
  * @description
  * @date 2024/01/21 15:19
  */
-@Slf4j
 public class DaoAspect implements MethodInterceptor {
     @Nullable
     @Override
@@ -24,6 +23,8 @@ public class DaoAspect implements MethodInterceptor {
             final SwitchDataSource annotation = daoClass.getAnnotation(SwitchDataSource.class);
             if (annotation != null) {
                 DataSourceHolder.setDataSourceKey(annotation.value());
+            } else {
+                DataSourceHolder.setDataSourceKey(Constant.DATASOURCE_ANDI);
             }
             return invocation.proceed();
         } finally {

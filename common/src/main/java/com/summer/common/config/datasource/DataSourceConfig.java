@@ -45,9 +45,9 @@ public class DataSourceConfig {
             dataSource.setConnectionTestQuery(dataSourceConfigModel.getConnectionTestQuery());
             dataSourceMap.put(dataSourceConfigModel.getName(), dataSourceConfigProperty.configDatasource(dataSource));
             //默认数据源配置
-            if (defaultDataSource == null || StringUtils.equals(Constant.DATASOURCE_ANDI, dataSourceConfigModel.getName())) {
+            if (defaultDataSource == null || Constant.DATASOURCE_ANDI.equals(dataSourceConfigModel.getName())) {
                 defaultDataSource = dataSource;
-                log.info("--current default datasource:[{}]-[{}]", dataSource.getPoolName(), dataSource.getJdbcUrl());
+                log.info("--Default dataSource:[{}]-[{}]", dataSource.getPoolName(), dataSource.getJdbcUrl());
             }
         }
         if (dataSourceMap.isEmpty()) {
@@ -58,7 +58,6 @@ public class DataSourceConfig {
         routingDataSource.setDefaultTargetDataSource(defaultDataSource);
         routingDataSource.setTargetDataSources(dataSourceMap);
         log.info("--The number of configured datasource:{}", dataSourceMap.size());
-
         return routingDataSource;
     }
 }

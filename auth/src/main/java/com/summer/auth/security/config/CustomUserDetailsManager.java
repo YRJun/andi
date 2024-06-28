@@ -1,9 +1,9 @@
-package com.summer.auth.config.security;
+package com.summer.auth.security.config;
 
 import com.summer.auth.dao.AndiDAO;
 import com.summer.common.model.andi.AndiUser;
 import jakarta.annotation.Resource;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
@@ -17,7 +17,7 @@ import java.util.Collection;
 /**
  * 自定义的 {@link org.springframework.security.provisioning.UserDetailsManager UserDetailsManager},
  * 由于已经使用{@link org.springframework.stereotype.Component @Component}注册为bean,
- * 因此在{@link com.summer.auth.config.SecurityConfig SecurityConfig}中不需要再另外注册bean,
+ * 因此在{@link SecurityConfig SecurityConfig}中不需要再另外注册bean,
  * 否则就需要自定义{@link org.springframework.security.authentication.AuthenticationProvider AuthenticationProvider}
  * @author Renjun Yu
  * @date 2024/06/12 10:56
@@ -34,7 +34,9 @@ public class CustomUserDetailsManager implements UserDetailsManager, UserDetails
         if (user == null) {
             throw new UsernameNotFoundException("用户[" + username + "]不存在");
         }
-        Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        final SimpleGrantedAuthority roleUser = new SimpleGrantedAuthority("ROLE_USER");
+        authorities.add(roleUser);
         return new User(user.getUsername(),
                 user.getPassword(),
                 user.getIsActive() == 1,

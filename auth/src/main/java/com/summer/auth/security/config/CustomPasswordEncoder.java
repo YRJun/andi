@@ -1,4 +1,4 @@
-package com.summer.auth.config.security;
+package com.summer.auth.security.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCrypt;
