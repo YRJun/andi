@@ -8,5 +8,5 @@ import com.summer.common.model.andi.AndiInterfaceLog;
  * @date 2024/01/21 11:07
  */
 public interface AndiInterfaceLogMapper {
-    int createInterfaceLog(AndiInterfaceLog log);
+    int insertInterfaceLog(AndiInterfaceLog log);
 }

@@ -1,12 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.summer.common.mapper.AndiUserMapper">
-    <insert id="createUser" parameterType="com.summer.common.model.andi.AndiUser">
-        insert into andi_user (username, `password`, email, full_name, alias_name, country, profile_picture, birthdate, is_active, address, phone, gender)
-        values (#{username}, #{password}, #{email}, #{fullName}, #{aliasName}, #{country}, #{profilePicture}, #{birthdate}, #{isActive}, #{address}, #{phone}, #{gender})
+
+    <resultMap id="AndiUserResultMap" type="com.summer.common.model.andi.AndiUserDO">
+        <id property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="fullName" column="full_name"/>
+        <result property="aliasName" column="alias_name"/>
+        <result property="birthdate" column="birthdate"/>
+        <result property="gender" column="gender"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="country" column="country"/>
+        <result property="enable" column="is_enable"/>
+        <result property="accountExpire" column="is_account_expire"/>
+        <result property="passwordExpire" column="is_password_expire"/>
+        <result property="lock" column="is_lock"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+        <result property="profilePicture" column="profile_picture"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <insert id="insertUser" parameterType="com.summer.common.model.andi.AndiUserDO">
+        insert into andi_user (user_id, username, `password`, email, full_name, alias_name, birthdate, gender, phone, address,
+                               country, is_enable, is_account_expire, is_password_expire, is_lock, profile_picture, create_time, update_time)
+        values (#{userId}, #{username}, #{password}, #{email}, #{fullName}, #{aliasName}, #{birthdate}, #{gender}, #{phone}, #{address},
+                #{country}, #{enable}, #{accountExpire}, #{passwordExpire}, #{lock}, #{profilePicture}, #{createTime}, #{updateTime})
     </insert>
 
-    <select id="selectUserByUsername" resultType="com.summer.common.model.andi.AndiUser">
+    <select id="getUserByUsername" resultMap="AndiUserResultMap">
         select * from andi_user where username = #{username}
     </select>
+
+    <select id="getUserByUsernameOptional" resultMap="AndiUserResultMap">
+        select * from andi_user where username = #{username}
+    </select>
+
 </mapper>

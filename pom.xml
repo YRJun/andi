@@ -47,6 +47,8 @@
         <httpclient.version>5.3.1</httpclient.version>
         <pdfbox.version>3.0.2</pdfbox.version>
         <poi.version>5.2.5</poi.version>
+        <camel.version>4.1.0</camel.version>
+        <commons-csv.version>1.11.0</commons-csv.version>
     </properties>
 
     <!--依赖项漏洞安全检查已关闭Settings-Editor-Inspections-Security:Vulnerable declared dependency,Vulnerable imported dependency-->
@@ -162,6 +164,32 @@
                 <groupId>org.apache.httpcomponents.client5</groupId>
                 <artifactId>httpclient5</artifactId>
                 <version>${httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel.springboot</groupId>
+                <artifactId>camel-spring-boot-starter</artifactId>
+                <version>${camel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-ftp</artifactId>
+                <version>${camel.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.camel.springboot/camel-micrometer-starter -->
+            <dependency>
+                <groupId>org.apache.camel.springboot</groupId>
+                <artifactId>camel-micrometer-starter</artifactId>
+                <version>${camel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel.springboot</groupId>
+                <artifactId>camel-observation-starter</artifactId>
+                <version>${camel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-csv</artifactId>
+                <version>${commons-csv.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

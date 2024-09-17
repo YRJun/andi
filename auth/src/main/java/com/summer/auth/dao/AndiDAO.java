@@ -2,14 +2,12 @@ package com.summer.auth.dao;
 
 import com.summer.common.config.datasource.SwitchDataSource;
 import com.summer.common.mapper.AndiUserMapper;
-import com.summer.common.model.andi.AndiUser;
-import jakarta.annotation.Resource;
+import com.summer.common.model.andi.AndiUserDO;
+import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
-import java.util.List;
-
+import java.util.Optional;
 
 /**
  * @author Renjun Yu
@@ -18,21 +16,24 @@ import java.util.List;
  */
 @Repository
 @SwitchDataSource
+@RequiredArgsConstructor
 public class AndiDAO {
-    @Resource
-    private SqlSessionTemplate template;
 
-    public void createUser(AndiUser user) {
-        final AndiUserMapper mapper = template.getMapper(AndiUserMapper.class);
-        mapper.createUser(user);
+    private final SqlSessionTemplate sqlSessionTemplate;
+
+    public int insertUser(AndiUserDO user) {
+        final AndiUserMapper mapper = sqlSessionTemplate.getMapper(AndiUserMapper.class);
+        return mapper.insertUser(user);
     }
  
-    public AndiUser queryUserByUsername(String username) {
-        final AndiUserMapper mapper = template.getMapper(AndiUserMapper.class);
-        final List<AndiUser> andiUserList = mapper.selectUserByUsername(username);
-        if (!CollectionUtils.isEmpty(andiUserList)) {
-            return andiUserList.getFirst();
-        }
-        return null;
+    public AndiUserDO getUserByUsername(String username) {
+        final AndiUserMapper mapper = sqlSessionTemplate.getMapper(AndiUserMapper.class);
+        return mapper.getUserByUsername(username);
+    }
+
+    public AndiUserDO getOptionalUserByUsername(String username) {
+        final AndiUserMapper mapper = sqlSessionTemplate.getMapper(AndiUserMapper.class);
+        final Optional<AndiUserDO> andiUserOptional = mapper.getUserByUsernameOptional(username);
+        return andiUserOptional.orElse(null);
     }
 }

@@ -50,7 +50,9 @@ pointcut:
   controller:
     property: execution(public * com.summer.auth.controller.*Controller.*(..))
   dao:
-    property: execution(public * com.summer.auth.dao.*Dao.*(..))
+    property: execution(public * com.summer.auth.dao.*DAO.*(..))
+  handler:
+    property: execution(public * com.summer.common.config.GlobalExceptionHandler.*(..))
 logging:
   level:
     # 指定了日志配置的应用范围，这里是针对org.springframework.security包下的所有类。trace: 是日志级别的一种，表示最详细的日志输出级别

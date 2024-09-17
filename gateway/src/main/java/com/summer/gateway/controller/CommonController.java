@@ -1,12 +1,12 @@
 package com.summer.gateway.controller;
 
-import com.summer.common.model.andi.AndiUser;
+import com.summer.common.model.andi.AndiUserDO;
 import com.summer.common.model.request.AndiBaseRequest;
 import com.summer.common.model.response.AndiResponse;
 import com.summer.gateway.service.CommonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("common")
+@RequiredArgsConstructor
 @Tag(name = "CommonController", description = "公共管理")
 public class CommonController {
-    @Resource
-    private CommonService commonService;
+    private final CommonService commonService;
 
     @Operation(summary = "trace", description = "获取traceId的测试方法")
     @PostMapping("trace")
@@ -29,7 +29,7 @@ public class CommonController {
 
     @Operation(summary = "test", description = "创建用户的测试方法")
     @PostMapping("test")
-    public AndiResponse<?> test(@RequestBody AndiUser user) {
+    public AndiResponse<?> test(@RequestBody AndiUserDO user) {
         return commonService.test(user);
     }
 }

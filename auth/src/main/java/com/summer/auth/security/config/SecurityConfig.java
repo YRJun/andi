@@ -1,4 +1,4 @@
-package com.summer.auth.config;
+package com.summer.auth.security.config;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -66,20 +67,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Order(2)
+    //@Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         // 配置哪些请求会匹配这个安全过滤器链。在这里使用了一个Lambda表达式，定义匹配所有URI不是/actuator/prometheus的请求。
-        http.securityMatcher(request -> !"/actuator/prometheus".equals(request.getRequestURI()))
+        http.securityMatcher(request -> !"/actuator/prometheus".equals(request.getRequestURI())
+//                        && !"/login".equals(request.getRequestURI())
+//                        && !"/oauth2".equals(request.getRequestURI())
+                )
                 // authorizeHttpRequests：定义如何处理HTTP请求的授权；配置所有请求都需要认证
                 .authorizeHttpRequests((authorize) -> authorize
-                        .anyRequest().authenticated()
+                                .requestMatchers("/login").permitAll()
+                                //.anyRequest().authenticated()
+                                .anyRequest().hasRole("USER")
                 )
+                // 使用 HttpSecurity#addFilterBefore 在 AuthorizationFilter 之前添加 TenantFilter。
+                //.addFilterBefore(new TenantFilter(), AuthorizationFilter.class)
+                .csrf(AbstractHttpConfigurer::disable)
                 // formLogin：启用表单登录。Customizer.withDefaults()：使用默认的表单登录配置。默认情况下，如果未认证的用户尝试访问受保护的资源，他们会被重定向到登录页面。
-                .formLogin(Customizer.withDefaults());
-
+                //.formLogin(Customizer.withDefaults());
+                .formLogin(form -> form.loginPage("/login").permitAll());
         return http.build();
     }
-
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
@@ -129,7 +137,7 @@ public class SecurityConfig {
         return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
     }
 
-    @Bean
+    //@Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
                 .issuer("https://example.com")

@@ -3,7 +3,7 @@ package com.summer.common.dao;
 import com.summer.common.config.datasource.SwitchDataSource;
 import com.summer.common.mapper.AndiInterfaceLogMapper;
 import com.summer.common.model.andi.AndiInterfaceLog;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -15,12 +15,13 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @SwitchDataSource
+@RequiredArgsConstructor
 public class CommonAndiDAO {
-    @Resource
-    private SqlSessionTemplate template;
 
-    public void createInterfaceLog(AndiInterfaceLog log) {
+    private final SqlSessionTemplate template;
+
+    public void insertInterfaceLog(AndiInterfaceLog log) {
         final AndiInterfaceLogMapper mapper = template.getMapper(AndiInterfaceLogMapper.class);
-        mapper.createInterfaceLog(log);
+        mapper.insertInterfaceLog(log);
     }
 }

@@ -4,8 +4,8 @@ import com.summer.common.config.datasource.SwitchDataSource;
 import com.summer.common.mapper.AndiInterfaceLogMapper;
 import com.summer.common.mapper.AndiUserMapper;
 import com.summer.common.model.andi.AndiInterfaceLog;
-import com.summer.common.model.andi.AndiUser;
-import jakarta.annotation.Resource;
+import com.summer.common.model.andi.AndiUserDO;
+import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -16,17 +16,17 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @SwitchDataSource
+@RequiredArgsConstructor
 public class AndiDAO {
-    @Resource
-    private SqlSessionTemplate template;
+    private final SqlSessionTemplate template;
 
-    public void createUser(AndiUser user) {
+    public void createUser(AndiUserDO user) {
         final AndiUserMapper mapper = template.getMapper(AndiUserMapper.class);
-        mapper.createUser(user);
+        mapper.insertUser(user);
     }
 
     public void createInterfaceLog(AndiInterfaceLog log) {
         final AndiInterfaceLogMapper mapper = template.getMapper(AndiInterfaceLogMapper.class);
-        mapper.createInterfaceLog(log);
+        mapper.insertInterfaceLog(log);
     }
 }

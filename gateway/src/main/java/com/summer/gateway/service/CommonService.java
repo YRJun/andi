@@ -1,10 +1,9 @@
 package com.summer.gateway.service;
 
-import com.summer.common.model.andi.AndiUser;
+import com.summer.common.model.andi.AndiUserDO;
 import com.summer.common.model.response.AndiResponse;
-import com.summer.common.util.RedisUtils;
 import com.summer.gateway.dao.AndiDAO;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +14,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CommonService {
-    @Resource
-    private AndiDAO andiDao;
-    @Resource
-    private RedisUtils redisUtils;
+    private final AndiDAO andiDao;
 
-    public AndiResponse<?> test(AndiUser user) {
+    public AndiResponse<?> test(AndiUserDO user) {
         log.info("CommonService.test");
         AndiResponse<?> response = new AndiResponse<>();
         try {

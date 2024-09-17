@@ -40,4 +40,5 @@ spring:
             certificate: D:/Test/ca.crt
 app:
   security:
-    bcrypt-log2-rounds: 10
+    # 经过测试，本机配置为14时，加密大约需要1秒，符合官方推荐
+    bcrypt-log-rounds: 14

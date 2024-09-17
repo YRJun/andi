@@ -1,8 +1,8 @@
 package com.summer.auth.security.config;
 
 import com.summer.auth.dao.AndiDAO;
-import com.summer.common.model.andi.AndiUser;
-import jakarta.annotation.Resource;
+import com.summer.common.model.andi.AndiUserDO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,14 +23,14 @@ import java.util.Collection;
  * @date 2024/06/12 10:56
  */
 @Component
+@RequiredArgsConstructor
 public class CustomUserDetailsManager implements UserDetailsManager, UserDetailsPasswordService {
 
-    @Resource
-    private AndiDAO andiDAO;
+    private final AndiDAO andiDAO;
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final AndiUser user = andiDAO.queryUserByUsername(username);
+        final AndiUserDO user = andiDAO.getUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("用户[" + username + "]不存在");
         }
@@ -39,10 +39,10 @@ public class CustomUserDetailsManager implements UserDetailsManager, UserDetails
         authorities.add(roleUser);
         return new User(user.getUsername(),
                 user.getPassword(),
-                user.getIsActive() == 1,
-                true,
-                true,
-                true,
+                user.getEnable(),
+                !user.getAccountExpire(),
+                !user.getPasswordExpire(),
+                !user.getLock(),
                 authorities);
     }
 
